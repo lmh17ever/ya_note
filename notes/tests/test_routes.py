@@ -88,18 +88,3 @@ class TestRoutes(TestCase):
                 redirect_url = f'{login_url}?next={url}'
                 response = self.client.get(url)
                 self.assertRedirects(response, redirect_url)
-
-    # def test_redirect_after_action_to_note(self):
-    #     self.client.force_login(self.author)
-    #     success_url = reverse_lazy('notes:success')
-    #     note_slug = self.note.slug
-    #     urls = (
-    #         ('notes:edit', (note_slug,)),
-    #         ('notes:delete', (note_slug,)),
-    #         ('notes:add', None),
-    #     )
-    #     for name, args in urls:
-    #         with self.subTest(user=self.author, name=name):
-    #             url = reverse(name, args=args)
-    #             response = self.client.post(url)
-    #             self.assertRedirects(response, success_url)
