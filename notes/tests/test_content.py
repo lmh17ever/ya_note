@@ -25,6 +25,9 @@ class TestForm(TestCase):
         )
 
     def authorized_user_and_author_has_form(self):
+        """У авторизованног пользователя отображается
+        форма создания и редактирования заметки.
+        """
         self.client.force_login(self.author)
         for name in self.urls:
             with self.subTest(name=name):

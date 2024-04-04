@@ -38,6 +38,7 @@ class TestNoteCreation(TestCase):
         cls.url_after_action = reverse('notes:success')
 
     def test_anonymous_user_cant_create_note(self):
+        """Анонимный пользователь не может создать заметку."""
         self.client.post(self.url, data=self.form_data)
         notes_count = Note.objects.count()
         self.assertEqual(notes_count, 1)
@@ -55,6 +56,7 @@ class TestNoteCreation(TestCase):
         self.assertRedirects(response, self.url_after_action)
 
     def test_user_cant_create_note_with_ununique_slug(self):
+        """Пользователь не может создать заметку с уже существующим слагом."""
         self.form_data['slug'] = self.EXISTING_SLUG
         response = self.author_client.post(self.url, self.form_data)
         self.assertFormError(
@@ -99,18 +101,21 @@ class TestNoteEditDelete(TestCase):
         cls.form_data['title'] = cls.NEW_TITLE
 
     def test_author_can_delete_note(self):
+        """Автор может удалить свою заметку."""
         response = self.author_client.delete(self.delete_url)
         self.assertRedirects(response, self.url_after_action)
         notes_count = Note.objects.count()
         self.assertEqual(notes_count, 0)
 
     def test_reader_cant_delete_note(self):
+        """Пользователь не может удалить чужую замтеку"""
         response = self.reader_client.delete(self.delete_url)
         notes_count = Note.objects.count()
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
         self.assertEqual(notes_count, 1)
 
     def test_author_can_edit_comment(self):
+        """Автор может отредактировать свою заметку."""
         response = self.author_client.post(
             self.edit_url,
             data=self.form_data
@@ -120,6 +125,7 @@ class TestNoteEditDelete(TestCase):
         self.assertEqual(self.note.title, self.NEW_TITLE)
 
     def test_reader_cant_edit_comment(self):
+        """Пользователь не может отредактировать чужую заметку."""
         response = self.reader_client.post(self.edit_url, data=self.form_data)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
         self.note.refresh_from_db()
