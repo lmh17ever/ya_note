@@ -44,6 +44,7 @@ class TestNoteCreation(TestCase):
         self.assertEqual(notes_count, 1)
 
     def test_user_can_create_note(self):
+        """Авторизованный пользователь может создать заметку."""
         response = self.author_client.post(self.url, data=self.form_data)
         self.assertRedirects(response, self.url_after_action)
         notes_count = Note.objects.count()
@@ -69,6 +70,9 @@ class TestNoteCreation(TestCase):
         self.assertEqual(notes_count, 1)
 
     def test_slug_auto_transliterating(self):
+        """Автоматическое создание слага в случае
+        его отсутствия.
+        """
         self.form_data['slug'] = ''
         self.author_client.post(self.url, self.form_data)
         note = Note.objects.last()

@@ -28,7 +28,7 @@ class TestRoutes(TestCase):
     def test_pages_availability(self):
         """Главная страница, страница регистрации,
         страницы входа в учётную запись и выхода
-        из неё доступны анонимному пользователю.
+        из неё доступны всем пользователям.
         """
         urls = (
             'notes:home',
@@ -43,8 +43,8 @@ class TestRoutes(TestCase):
                 self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_avaliability_for_actions_to_notes_and_detail(self):
-        """Доступность страниц редактирования, удаления и детальной
-        для автора и для анонимного пользователя.
+        """Страницы редактирования, удаления заметки и
+        отдельной заметки доступны для автора и для анонимного пользователя.
         """
         users_statuses = (
             (self.author, HTTPStatus.OK),
